@@ -19,16 +19,18 @@ class Route53Connection(object):
     endpoint_version = '2012-02-29'
     """The date-based API version. Mostly visible for your reference."""
 
-    def __init__(self, aws_access_key_id, aws_secret_access_key):
+    def __init__(self, aws_access_key_id, aws_secret_access_key, aws_security_token = None):
         """
         :param str aws_access_key_id: An account's access key ID.
         :param str aws_secret_access_key: An account's secret access key.
+        :param str aws_security_token: An STS security token.
         """
 
         self._endpoint = 'https://route53.amazonaws.com/%s/' % self.endpoint_version
         self._xml_namespace = 'https://route53.amazonaws.com/doc/%s/' % self.endpoint_version
         self._aws_access_key_id = aws_access_key_id
         self._aws_secret_access_key = aws_secret_access_key
+        self._aws_security_token = aws_security_token
         self._transport = RequestsTransport(self)
 
     def _send_request(self, path, data, method):

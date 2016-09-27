@@ -81,11 +81,17 @@ class BaseTransport(object):
             signing_key,
         )
 
-        return {
+        headers = {
             'X-Amzn-Authorization': auth_header,
             'x-amz-date': date_header,
             'Host': 'route53.amazonaws.com',
         }
+
+        # Add security token if we have it.
+        if self.connection._aws_security_token:
+            headers['x-amz-security-token'] = self.connection._aws_security_token
+
+        return headers
 
     def send_request(self, path, data, method):
         """
